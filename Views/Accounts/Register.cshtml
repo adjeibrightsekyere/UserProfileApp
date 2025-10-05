@@ -1,0 +1,50 @@
+﻿@model UserProfileApp.Models.RegisterViewModel
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+
+@if (!ViewData.ModelState.IsValid)
+{
+  <div class="alert alert-danger">
+      @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+      {
+          <p>@error.ErrorMessage</p>
+        }
+    )
+  </div>  
+}
+
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+<a asp-action="Login">Already have an account? Login</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

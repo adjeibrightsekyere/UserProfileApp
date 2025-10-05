@@ -1,0 +1,18 @@
+﻿@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (!ViewData.ModelState.IsValid)
+{
+    foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+        <div class="alert alert-danger">@error.ErrorMessage</div>
+    }
+}
+
+<form method="post">
+    <input type="text" name="email" placeholder="User Email" />
+    <input type="text" name="role" placeholder="Role Name" />
+    <button type="submit">Assign Role</button>
+    <p>@ViewBag.Error</p>
+</form>

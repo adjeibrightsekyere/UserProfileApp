@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container mt-4">
+    <h2>Welcome to User Profile Web App</h2>
+    <hr />
+
+    @if (User?.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <p class="lead">Manage users and roles</p>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Create User</h5>
+                        <p class="card-text">Register a new user</p>
+                        <a asp-controller="Admin" asp-action="CreateUser" class="btn btn-primary">Create User</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Create Role</h5>
+                        <p class="card-text">Define roles such as Admin, Manager, or User</p>
+                        <a asp-controller="Admin" asp-action="CreateRole" class="btn btn-success">Create Role</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Assign Role</h5>
+                        <p class="card-text">Assign roles to registered users</p>
+                        <a asp-controller="Admin" asp-action="AssignRole" class="btn btn-warning">Assign Role</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="lead">Please register or log in to manage users and roles.</p>
+
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Register</h5>
+                        <p class="card-text">Create an account to access the admin features.</p>
+                        <a asp-controller="Accounts" asp-action="Register" class="btn btn-primary">Register</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Login</h5>
+                        <p class="card-text">Already have an account? Log in here.</p>
+                        <a asp-controller="Accounts" asp-action="Login" class="btn btn-success">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
