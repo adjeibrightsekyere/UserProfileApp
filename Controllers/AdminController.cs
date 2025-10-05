@@ -95,34 +95,31 @@ namespace UserProfileApp.Controllers
         {
             var roles = _roleManager.Roles.Select(r => r.Name).ToList();
             ViewBag.Roles = new SelectList(roles);
-            return View();
+            return View(new CreateUserViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(string Email, string Password, string ConfirmPassword, string Role)
+        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             var roles = _roleManager.Roles.Select(r => r.Name).ToList();
             ViewBag.Roles = new SelectList(roles);
 
-            if (Password != ConfirmPassword)
-            {
-                ModelState.AddModelError("", "Passwords do not match");
-                return View();
-            }
+            if (!ModelState.IsValid)
+                return View(model); // Always pass the model
 
             var user = new IdentityUser
             {
-                UserName = Email,
-                Email = Email
+                UserName = model.Email,
+                Email = model.Email
             };
 
-            var result = await _userManager.CreateAsync(user, Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                if (!string.IsNullOrEmpty(Role) && await _roleManager.RoleExistsAsync(Role))
+                if (!string.IsNullOrEmpty(model.Role) && await _roleManager.RoleExistsAsync(model.Role))
                 {
-                    await _userManager.AddToRoleAsync(user, Role);
+                    await _userManager.AddToRoleAsync(user, model.Role);
                 }
                 TempData["Success"] = "User created successfully!";
                 return RedirectToAction("CreateUser");
@@ -131,7 +128,7 @@ namespace UserProfileApp.Controllers
             foreach (var err in result.Errors)
                 ModelState.AddModelError("", err.Description);
 
-            return View();
+            return View(model); // Always pass the model
         }
     }
 }
