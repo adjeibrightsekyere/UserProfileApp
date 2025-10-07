@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Users and Roles";
+    var users = ViewBag.Users as List<Microsoft.AspNetCore.Identity.IdentityUser>;
+    var roles = ViewBag.Roles as List<Microsoft.AspNetCore.Identity.IdentityRole>;
+    var userRoles = ViewBag.UserRoles as Dictionary<string, IList<string>>;
+}
+
+<h2>Users</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Roles</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (users != null)
+        {
+            foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>
+                        @if (userRoles != null && userRoles.TryGetValue(user.Id, out var rolesForUser) && rolesForUser != null && rolesForUser.Count > 0)
+                        {
+                            @string.Join(", ", rolesForUser)
+                        }
+                        else
+                        {
+                            <span>No roles</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h2>Roles</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Role Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (roles != null)
+        {
+            foreach (var role in roles)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -105,7 +105,7 @@ namespace UserProfileApp.Controllers
             ViewBag.Roles = new SelectList(roles);
 
             if (!ModelState.IsValid)
-                return View(model); // Always pass the model
+                return View(model);
 
             var user = new IdentityUser
             {
@@ -128,7 +128,28 @@ namespace UserProfileApp.Controllers
             foreach (var err in result.Errors)
                 ModelState.AddModelError("", err.Description);
 
-            return View(model); // Always pass the model
+            return View(model);
+        }
+
+        // ---------------- LIST USERS AND ROLES ----------------
+        [HttpGet]
+        public async Task<IActionResult> ListUsersAndRoles()
+        {
+            var users = _userManager.Users.ToList();
+            var roles = _roleManager.Roles.ToList();
+
+
+            var userRoles = new Dictionary<string, IList<string>>();
+            foreach (var user in users)
+            {
+                var rolesForUser = await _userManager.GetRolesAsync(user);
+                userRoles[user.Id] = rolesForUser;
+            }
+
+            ViewBag.Users = users;
+            ViewBag.Roles = roles;
+            ViewBag.UserRoles = userRoles;
+            return View();
         }
     }
 }
